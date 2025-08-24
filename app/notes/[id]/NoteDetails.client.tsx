@@ -9,13 +9,17 @@ interface NoteDetailsClientProps {
 }
 
 export default function NoteDetailsClient({ id }: NoteDetailsClientProps) {
-  const { data: note, isLoading, error } = useQuery({
+  const {
+    data: note,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ["note", id],
     queryFn: () => fetchNoteById(id),
   });
 
   if (isLoading) return <p>Loading note...</p>;
-if (error || !note) return <p>Failed to load note.</p>;
+  if (error || !note) return <p>Failed to load note.</p>;
 
   return (
     <div className={styles.container}>
