@@ -25,7 +25,6 @@ export default function NotesClient() {
     placeholderData: keepPreviousData,
   });
 
-  // оновлюємо пошук зі скиданням сторінки
   function handleSearchChange(value: string) {
     setSearch(value);
     setPage(1);

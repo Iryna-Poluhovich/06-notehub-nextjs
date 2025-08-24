@@ -14,8 +14,8 @@ export default function NoteDetailsClient({ id }: NoteDetailsClientProps) {
     queryFn: () => fetchNoteById(id),
   });
 
-  if (isLoading) return <p>Loading, please wait...</p>;
-  if (error || !note) return <p>Something went wrong.</p>;
+  if (isLoading) return <p className={styles.loading}>Loading note...</p>;
+if (error || !note) return <p className={styles.error}>Failed to load note.</p>;
 
   return (
     <div className={styles.container}>
