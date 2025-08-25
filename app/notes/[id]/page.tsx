@@ -6,8 +6,10 @@ import {
 import { fetchNoteById } from "@/lib/api";
 import NoteDetailsClient from "./NoteDetails.client";
 
+
 interface NoteDetailsPageProps {
   params: { id: string };
+  searchParams: { [key: string]: string | string[] | undefined };
 }
 
 export default async function NoteDetailsPage({ params }: NoteDetailsPageProps){
