@@ -4,9 +4,6 @@ import type { Note } from "../types/note";
 
 export interface PaginatedNotes {
   notes: Note[];
-  total: number;
-  page: number;
-  perPage: number;
   totalPages: number;
 }
 
@@ -35,7 +32,6 @@ export async function fetchNotes(
   return data;
 }
 
-
 export async function createNote(note: {
   title: string;
   content: string;
@@ -45,17 +41,12 @@ export async function createNote(note: {
   return data;
 }
 
-export async function fetchNoteById(id: number): Promise<Note> {
-  const { data } = await api.get(`/notes/${id}`);
+export async function fetchNoteById(id: string): Promise<Note> {
+  const { data }: AxiosResponse<Note> = await api.get(`/notes/${id}`);
   return data;
 }
 
-
-export async function deleteNote(id: number): Promise<void> {
-  const res = await fetch(`/api/notes/${id}`, {
-    method: "DELETE",
-  });
-  if (!res.ok) {
-    throw new Error("Failed to delete note");
-  }
+export async function deleteNote(id: string): Promise<Note> {
+  const { data }: AxiosResponse<Note> = await api.delete(`/notes/${id}`);
+  return data; 
 }

@@ -8,7 +8,7 @@ import NoteDetailsClient from "./NoteDetails.client";
 
 
 interface NoteDetailsProps {
-	params: Promise<{ id: number }>
+	params: Promise<{ id: string }>
 }
 
 const NoteDetails = async ({ params }: NoteDetailsProps) => {

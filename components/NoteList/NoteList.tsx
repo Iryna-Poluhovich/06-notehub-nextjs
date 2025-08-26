@@ -8,21 +8,23 @@ import styles from "./NoteList.module.css";
 import type { Note } from "../../types/note";
 
 interface NoteListProps {
+  query: string
+	page: number
   notes: Note[];
 }
 
-export default function NoteList({ notes }: NoteListProps) {
+export default function NoteList({ query, page, notes }: NoteListProps) {
   const queryClient = useQueryClient();
 
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
 
   const mutation = useMutation({
-    mutationFn: (id: string) => deleteNote(Number(id)),
-    onMutate: (id: string) => {
-      setIsDeleting(id);
+    mutationFn: async (id: string) => {
+      await deleteNote(id); 
+      return id;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["notes"] });
+      queryClient.invalidateQueries({ queryKey: ["notes", query, page] });
     },
     onSettled: () => {
       setIsDeleting(null);
@@ -33,24 +35,24 @@ export default function NoteList({ notes }: NoteListProps) {
 
   return (
     <ul className={styles.list}>
-      {notes.map((note) => (
-        <li key={note.id} className={styles.listItem}>
-          <h2 className={styles.title}>{note.title}</h2>
-          <p className={styles.content}>{note.content}</p>
+      {notes.map(({ id, title, content, tag }) => (
+        <li key={id} className={styles.listItem}>
+          <h2 className={styles.title}>{title}</h2>
+          <p className={styles.content}>{content}</p>
           <div className={styles.footer}>
-            <span className={styles.tag}>{note.tag}</span>
+            <span className={styles.tag}>{tag}</span>
 
-            <Link href={`/notes/${note.id}`} className={styles.link}>
+            <Link href={`/notes/${id}`} className={styles.link}>
               View details
             </Link>
 
             <button
               type="button"
               className={styles.button}
-              onClick={() => mutation.mutate(String(note.id))}
-              disabled={isDeleting === String(note.id)}
+              onClick={() => mutation.mutate(String(id))}
+              disabled={isDeleting === String(id)}
             >
-              {isDeleting === String(note.id) ? "Deleting…" : "Delete"}
+              {isDeleting === String(id) ? "Deleting…" : "Delete"}
             </button>
           </div>
         </li>

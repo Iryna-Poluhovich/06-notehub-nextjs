@@ -5,7 +5,7 @@ import { fetchNoteById } from "@/lib/api";
 import styles from "./NoteDetails.module.css";
 
 interface NoteDetailsClientProps {
-  id: number;
+  id: string;
 }
 
 export default function NoteDetailsClient({ id }: NoteDetailsClientProps) {
@@ -16,6 +16,7 @@ export default function NoteDetailsClient({ id }: NoteDetailsClientProps) {
   } = useQuery({
     queryKey: ["note", id],
     queryFn: () => fetchNoteById(id),
+    refetchOnMount: false,
   });
 
   if (isLoading) return <p>Loading note...</p>;
