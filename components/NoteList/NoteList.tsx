@@ -8,8 +8,8 @@ import styles from "./NoteList.module.css";
 import type { Note } from "../../types/note";
 
 interface NoteListProps {
-  query: string
-	page: number
+  query: string;
+  page: number;
   notes: Note[];
 }
 
@@ -20,8 +20,11 @@ export default function NoteList({ query, page, notes }: NoteListProps) {
 
   const mutation = useMutation({
     mutationFn: async (id: string) => {
-      await deleteNote(id); 
+      await deleteNote(id);
       return id;
+    },
+    onMutate: (id: string) => {
+      setIsDeleting(id); // ✅ виставляємо id нотатки перед видаленням
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["notes", query, page] });
